@@ -1,0 +1,43 @@
+{
+  "global": {
+    "node_id": "beam-node-01",
+    "data_dir": "/home/pi/data",
+    "log_dir": "/var/log",
+    "polling_interval_sec": 10
+  },
+
+  "bme280": {
+    "enabled": true,
+    "auto_detect": true,
+    "directory": "/home/pi/data/bme280",
+    "thresholds": {
+      "temperature_c": { "min": 15, "max": 30 },
+      "humidity_percent": { "min": 30, "max": 70 },
+      "pressure_hpa": { "min": 950, "max": 1050 }
+    }
+  },
+
+  "pir": {
+    "enabled": true,
+    "auto_detect": true,
+    "directory": "/home/pi/data/pir",
+    "sensitivity": "medium",
+    "trigger_delay_sec": 5
+  },
+
+  "logging": {
+    "level": "INFO",
+    "rotate": true,
+    "max_size_mb": 5
+  },
+
+  "network": {
+    "mqtt": {
+      "enabled": true,
+      "broker": "auto",
+      "port": 1883,
+      "topic_prefix": "beam/nodes/beam-node-01"
+    }
+  }
+}
+
