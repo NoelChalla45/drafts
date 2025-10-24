@@ -1,0 +1,15 @@
+#!/bin/bash
+# =========================================
+# Show BATMAN-adv neighbors with IP mapping
+# =========================================
+
+echo "BATMAN-adv Neighbors with IPs:"
+echo "----------------------------------"
+sudo batctl n | awk '/:/ {print $1, $2}' | while read IF MAC; do
+    IP=$(ip neigh show | grep -i $MAC | awk '{print $1}')
+    if [ -z "$IP" ]; then
+        echo "$IF  $MAC  -->  [No IP found]"
+    else
+        echo "$IF  $MAC  -->  $IP"
+    fi
+done
