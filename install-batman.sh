@@ -1,6 +1,6 @@
 #!/bin/bash
 # ========================================
-# BATMAN-adv Automatic Setup Script (Interactive)
+# BATMAN-adv Automatic Setup Script (Interactive, Interface-Selectable)
 # Tested on Debian / Raspberry Pi OS
 # ========================================
 
@@ -10,6 +10,9 @@ echo "=== BATMAN-adv Setup Script ==="
 echo
 
 # --- Ask for configuration with defaults ---
+read -p "Enter wireless interface to use (e.g. wlan0, wlan1) [wlan0]: " IFACE
+IFACE=${IFACE:-wlan0}
+
 read -p "Enter ad-hoc network name (SSID) [myadhoc]: " NETWORK_NAME
 NETWORK_NAME=${NETWORK_NAME:-myadhoc}
 
@@ -21,6 +24,7 @@ STATIC_IP=${STATIC_IP:-192.168.1.2/24}
 
 echo
 echo "Using configuration:"
+echo "  Interface:  $IFACE"
 echo "  SSID:       $NETWORK_NAME"
 echo "  Frequency:  $FREQUENCY MHz"
 echo "  IP Address: $STATIC_IP"
@@ -46,14 +50,14 @@ systemctl disable NetworkManager 2>/dev/null || true
 # Load BATMAN kernel module
 modprobe batman-adv
 
-# Configure wlan0 for ad-hoc mode
-ip link set wlan0 down
-iw dev wlan0 set type ibss
-ip link set wlan0 up
-iw dev wlan0 ibss join $NETWORK_NAME $FREQUENCY
+# Configure wireless interface for ad-hoc mode
+ip link set $IFACE down
+iw dev $IFACE set type ibss
+ip link set $IFACE up
+iw dev $IFACE ibss join $NETWORK_NAME $FREQUENCY
 
-# Add wlan0 to BATMAN
-batctl if add wlan0
+# Add interface to BATMAN
+batctl if add $IFACE
 ip link set up dev bat0
 
 # Assign static IP
@@ -69,8 +73,8 @@ echo "[2/4] Creating /etc/systemd/system/batman.service ..."
 cat <<EOF | sudo tee /etc/systemd/system/batman.service >/dev/null
 [Unit]
 Description=BATMAN-adv Mesh Network
-After=network.target sys-subsystem-net-devices-wlan0.device
-Wants=sys-subsystem-net-devices-wlan0.device
+After=network.target sys-subsystem-net-devices-$IFACE.device
+Wants=sys-subsystem-net-devices-$IFACE.device
 
 [Service]
 Type=oneshot
