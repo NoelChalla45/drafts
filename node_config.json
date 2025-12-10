@@ -1,0 +1,16 @@
+{
+    "global": {
+        "node_id": "beam-node-01",
+        "base_dir": "/home/pi/data",
+        "ship_dir": "/home/pi/shipping",
+        "timezone": "UTC",
+        "print_debug": true
+    },
+    "supervisor": {
+        "host": "192.168.1.20",
+        "user": "pi",
+        "heartbeat_dir": "/home/pi/supervisor/heartbeats",
+        "heartbeat_interval": 60,
+        "ping_timeout": 2
+    }
+}
