@@ -1,0 +1,11 @@
+[Unit]
+Description=Run BEAM ping monitor every 10 minutes
+
+[Timer]
+OnUnitActiveSec=10min
+AccuracySec=1min
+Persistent=true
+Unit=beam-ping-monitor.service
+
+[Install]
+WantedBy=timers.target

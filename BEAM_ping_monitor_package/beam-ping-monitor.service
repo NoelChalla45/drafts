@@ -1,0 +1,13 @@
+[Unit]
+Description=BEAM ping monitor (10-minute alive/dead logging)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=pi
+WorkingDirectory=/home/pi
+ExecStart=/usr/bin/env python3 /home/pi/ping_nodes_10min.py
+
+[Install]
+WantedBy=multi-user.target
