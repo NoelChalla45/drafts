@@ -1,0 +1,27 @@
+{
+  "node1": {
+    "ip": "192.168.1.1",
+    "transfer_fail": false,
+    "state": "unknown"
+  },
+  "node2": {
+    "ip": "192.168.1.2",
+    "transfer_fail": false,
+    "state": "unknown"
+  },
+  "node3": {
+    "ip": "192.168.1.3",
+    "transfer_fail": false,
+    "state": "unknown"
+  },
+  "node4": {
+    "ip": "192.168.1.4",
+    "transfer_fail": false,
+    "state": "unknown"
+  },
+  "node5": {
+    "ip": "192.168.1.5",
+    "transfer_fail": false,
+    "state": "unknown"
+  }
+}
