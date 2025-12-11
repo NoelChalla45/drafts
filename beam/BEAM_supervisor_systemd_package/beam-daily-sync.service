@@ -1,0 +1,13 @@
+[Unit]
+Description=BEAM daily data sync
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=pi
+WorkingDirectory=/home/pi
+ExecStart=/usr/bin/env python3 /home/pi/transfer_with_retry.py
+
+[Install]
+WantedBy=multi-user.target

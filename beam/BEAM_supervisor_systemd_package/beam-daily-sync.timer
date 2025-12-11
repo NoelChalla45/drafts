@@ -1,0 +1,10 @@
+[Unit]
+Description=Run BEAM daily data sync once per day
+
+[Timer]
+OnCalendar=*-*-* 03:00:00
+Persistent=true
+Unit=beam-daily-sync.service
+
+[Install]
+WantedBy=timers.target

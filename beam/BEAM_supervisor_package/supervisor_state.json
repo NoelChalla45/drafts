@@ -1,0 +1,12 @@
+{
+  "node1": { "fail_to_request_data": false, "node_alive": false,
+             "last_fail_time": null, "last_online_time": null, "last_offline_time": null },
+  "node2": { "fail_to_request_data": false, "node_alive": false,
+             "last_fail_time": null, "last_online_time": null, "last_offline_time": null },
+  "node3": { "fail_to_request_data": false, "node_alive": false,
+             "last_fail_time": null, "last_online_time": null, "last_offline_time": null },
+  "node4": { "fail_to_request_data": false, "node_alive": false,
+             "last_fail_time": null, "last_online_time": null, "last_offline_time": null },
+  "node5": { "fail_to_request_data": false, "node_alive": false,
+             "last_fail_time": null, "last_online_time": null, "last_offline_time": null }
+}

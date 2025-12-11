@@ -1,0 +1,15 @@
+[Unit]
+Description=Start node sensor logger automatically
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi
+ExecStart=/usr/bin/env python3 /home/pi/sensor_logger.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

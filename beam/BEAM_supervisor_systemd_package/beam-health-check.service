@@ -1,0 +1,13 @@
+[Unit]
+Description=BEAM 10-minute supervisor health check
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=pi
+WorkingDirectory=/home/pi
+ExecStart=/usr/bin/env python3 /home/pi/supervisor_ping_check.py
+
+[Install]
+WantedBy=timers.target

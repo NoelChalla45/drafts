@@ -1,0 +1,11 @@
+[Unit]
+Description=Run BEAM health check every 10 minutes
+
+[Timer]
+OnUnitActiveSec=10min
+AccuracySec=1min
+Persistent=true
+Unit=beam-health-check.service
+
+[Install]
+WantedBy=timers.target
