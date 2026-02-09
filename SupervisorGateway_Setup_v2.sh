@@ -45,9 +45,59 @@ echo "DHCP range:   $DHCP_RANGE_START - $DHCP_RANGE_END ($DHCP_MASK)"
 echo "Chrony allow: $ALLOW_SUBNET"
 echo
 
-echo "[1/9] Installing required packages..."
-apt-get update -y
-apt-get install -y iptables iptables-persistent dnsmasq chrony conntrack || true
+echo "[1/9] Checking and installing required packages..."
+
+# Function to check if package is installed
+is_installed() {
+    dpkg -l "$1" 2>/dev/null | grep -q "^ii"
+}
+
+# Track what needs to be installed
+PACKAGES_TO_INSTALL=()
+
+if ! is_installed iptables; then
+    echo "  - iptables not found, will install"
+    PACKAGES_TO_INSTALL+=("iptables")
+else
+    echo "  - iptables already installed ✓"
+fi
+
+if ! is_installed iptables-persistent; then
+    echo "  - iptables-persistent not found, will install"
+    PACKAGES_TO_INSTALL+=("iptables-persistent")
+else
+    echo "  - iptables-persistent already installed ✓"
+fi
+
+if ! is_installed dnsmasq; then
+    echo "  - dnsmasq not found, will install"
+    PACKAGES_TO_INSTALL+=("dnsmasq")
+else
+    echo "  - dnsmasq already installed ✓"
+fi
+
+if ! is_installed chrony; then
+    echo "  - chrony not found, will install"
+    PACKAGES_TO_INSTALL+=("chrony")
+else
+    echo "  - chrony already installed ✓"
+fi
+
+if ! is_installed conntrack; then
+    echo "  - conntrack not found, will install"
+    PACKAGES_TO_INSTALL+=("conntrack")
+else
+    echo "  - conntrack already installed ✓"
+fi
+
+# Only run apt-get if we have packages to install
+if [ ${#PACKAGES_TO_INSTALL[@]} -gt 0 ]; then
+    echo "  Installing: ${PACKAGES_TO_INSTALL[*]}"
+    apt-get update -y
+    apt-get install -y "${PACKAGES_TO_INSTALL[@]}" || true
+else
+    echo "  All required packages already installed, skipping apt-get"
+fi
 
 echo "[2/9] Stop services for clean configuration..."
 systemctl stop dnsmasq || true

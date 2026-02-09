@@ -18,9 +18,45 @@ echo "Mesh IF:   $MESH_IF"
 echo "Supervisor:$SUP_IP"
 echo
 
-echo "[1/9] Installing required packages..."
-apt-get update -y
-apt-get install -y chrony isc-dhcp-client rfkill || true
+echo "[1/9] Checking and installing required packages..."
+
+# Function to check if package is installed
+is_installed() {
+    dpkg -l "$1" 2>/dev/null | grep -q "^ii"
+}
+
+# Track what needs to be installed
+PACKAGES_TO_INSTALL=()
+
+if ! is_installed chrony; then
+    echo "  - chrony not found, will install"
+    PACKAGES_TO_INSTALL+=("chrony")
+else
+    echo "  - chrony already installed ✓"
+fi
+
+if ! is_installed isc-dhcp-client; then
+    echo "  - isc-dhcp-client not found, will install"
+    PACKAGES_TO_INSTALL+=("isc-dhcp-client")
+else
+    echo "  - isc-dhcp-client already installed ✓"
+fi
+
+if ! is_installed rfkill; then
+    echo "  - rfkill not found, will install"
+    PACKAGES_TO_INSTALL+=("rfkill")
+else
+    echo "  - rfkill already installed ✓"
+fi
+
+# Only run apt-get if we have packages to install
+if [ ${#PACKAGES_TO_INSTALL[@]} -gt 0 ]; then
+    echo "  Installing: ${PACKAGES_TO_INSTALL[*]}"
+    apt-get update -y
+    apt-get install -y "${PACKAGES_TO_INSTALL[@]}" || true
+else
+    echo "  All required packages already installed, skipping apt-get"
+fi
 
 echo "[2/9] Prevent dhclient DNS write issues..."
 mkdir -p /etc/dhcp/dhclient-enter-hooks.d
